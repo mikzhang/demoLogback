@@ -326,6 +326,41 @@ java -jar xxx.jar –spring.profiles.active=prod
 总结
 到此为止终于介绍完日志框架了，平时使用的时候推荐用自定义logback-spring.xml来配置，代码中使用日志也很简单，类里面添加private Logger logger = LoggerFactory.getLogger(this.getClass());即可
 
+## Lombok 的 @Slf4j
+
+引入 lombok 依赖
+```
+    <dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.8</version>
+			<scope>provided</scope>
+		</dependency>
+```
+
+更改logger
+```
+@Slf4j
+@Controller
+public class TestController {
+
+//lombok 的 @Slf4j 替代之
+//    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @RequestMapping(value = "/test")
+    @ResponseBody
+    public String login(){
+        //日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出。
+        log.trace("日志输出 TRACE");
+        log.debug("日志输出 DEBUG");
+        log.info("日志输出 INFO");
+        log.warn("日志输出 WARN");
+        log.error("日志输出 ERROR");
+        return "OK";
+    }
+}
+```
+
 ref:
 [Spring Boot干货系列：（七）默认日志logback配置解析](https://blog.csdn.net/c3618392/article/details/78934904)
 
